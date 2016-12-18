@@ -1,10 +1,11 @@
 package frompythontojava.exercise3;
 
-import com.sun.org.apache.regexp.internal.RE;
+import frompythontojava.exercise3.exceptions.Cancelled;
 import frompythontojava.exercise3.exceptions.InvalidCurrency;
 import frompythontojava.exercise3.model.Account;
 import frompythontojava.exercise3.model.Receipt;
 import frompythontojava.exercise3.model.User;
+import frompythontojava.exercise3.transaction.Transfer;
 
 import java.util.Currency;
 
@@ -47,5 +48,49 @@ public class Main {
         receipt.addDetails("2nd detail");
         receipt.addDetails("3rd detail");
         System.out.println(receipt);
+
+        // Transfer
+        Account account2 = new Account(user, "2", Currency.getInstance("HUF"));
+        Transfer transfer = new Transfer(account, account2, 10, Currency.getInstance("HUF"));
+        try {
+            System.out.println(transfer.complete());
+        } catch (Cancelled cancelled) {
+            System.out.println(cancelled);
+        }
+
+        // Transfer exceptions:
+        try {
+            // not enough amount on balance
+            // now 0 HUF on balance, after the first transfer on line 56
+            transfer.complete();
+        } catch (Cancelled cancelled) {
+            System.out.println(cancelled);
+        }
+
+        // raise balance
+        try {
+            account.increase(100, Currency.getInstance("HUF"));
+        } catch (InvalidCurrency invalidCurrency) {
+            invalidCurrency.printStackTrace();
+        }
+
+        // bad given currency based on source account
+        Transfer transferBadCurrency = new Transfer(account, account2, 10, Currency.getInstance("USD"));
+        try {
+            transferBadCurrency.complete();
+        } catch (Cancelled cancelled) {
+            System.out.println(cancelled);
+        }
+
+        // bad given currency based on target account
+        Account usdAccount = new Account(user, "3", Currency.getInstance("USD"));
+        Transfer transferBadCurrency2 = new Transfer(account, usdAccount, 10, Currency.getInstance("HUF"));
+        try {
+            transferBadCurrency2.complete();
+        } catch (Cancelled cancelled) {
+            System.out.println(cancelled);
+        }
+
+
     }
 }
