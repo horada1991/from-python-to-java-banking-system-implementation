@@ -1,7 +1,9 @@
 package frompythontojava.exercise3;
 
+import com.sun.org.apache.regexp.internal.RE;
 import frompythontojava.exercise3.exceptions.InvalidCurrency;
 import frompythontojava.exercise3.model.Account;
+import frompythontojava.exercise3.model.Receipt;
 import frompythontojava.exercise3.model.User;
 
 import java.util.Currency;
@@ -38,5 +40,12 @@ public class Main {
         }
 
         System.out.println(account);
+
+        // receipt
+        Receipt receipt = new Receipt();
+        receipt.addDetails("1st detail");
+        receipt.addDetails("2nd detail");
+        receipt.addDetails("3rd detail");
+        System.out.println(receipt);
     }
 }
