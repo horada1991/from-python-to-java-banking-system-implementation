@@ -5,6 +5,7 @@ import frompythontojava.exercise3.exceptions.InvalidCurrency;
 import frompythontojava.exercise3.model.Account;
 import frompythontojava.exercise3.model.Receipt;
 import frompythontojava.exercise3.model.User;
+import frompythontojava.exercise3.transaction.Deposit;
 import frompythontojava.exercise3.transaction.Transfer;
 import frompythontojava.exercise3.transaction.Withdrawal;
 
@@ -99,7 +100,6 @@ public class Main {
 
 
         System.out.println("\n\n----------------\nWITHDRAW");
-
         Withdrawal withdrawal = new Withdrawal(account, 20, Currency.getInstance("HUF"));
         try {
             System.out.println(withdrawal.complete());
@@ -122,5 +122,23 @@ public class Main {
         } catch (Cancelled cancelled) {
             System.out.println(cancelled);
         }
+
+
+        System.out.println("\n\n----------------\nDEPOSIT");
+        Deposit deposit = new Deposit(account, 100, Currency.getInstance("HUF"));
+        try {
+            System.out.println(deposit.complete());
+        } catch (Cancelled cancelled) {
+            cancelled.printStackTrace();
+        }
+
+        // not valid currency
+        Deposit depositWithNotValidCurrency = new Deposit(account, 100, Currency.getInstance("USD"));
+        try {
+            depositWithNotValidCurrency.complete();
+        } catch (Cancelled cancelled) {
+            System.out.println(cancelled);
+        }
     }
+
 }

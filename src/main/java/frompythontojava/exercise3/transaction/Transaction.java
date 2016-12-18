@@ -36,7 +36,7 @@ public abstract class Transaction {
         return currency;
     }
 
-    abstract Receipt complete() throws Cancelled, InvalidCurrency;
+    abstract Receipt complete() throws Cancelled;
 
     @Override
     public String toString() {
